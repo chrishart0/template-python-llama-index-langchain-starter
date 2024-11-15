@@ -3,7 +3,6 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 import asyncio
 import json
-from template_gen_ai_project.settings import settings
 from template_gen_ai_project.helpers.logger_helper import get_logger
 from template_gen_ai_project.tasks.tasks import (
     example_task,
@@ -135,4 +134,3 @@ logger.info(subtract(5, 3))
 logger.info(multiply(4, 2))
 logger.info(divide(10, 2))
 logger.info(power(2, 3))
-
