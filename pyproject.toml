@@ -22,6 +22,7 @@ uvicorn = "^0.32.0"           # https://pypi.org/project/uvicorn/
 rq = "^2.0.0"
 langchain-community = "^0.3.7"
 pdfplumber = "^0.11.4"
+langchain-ollama = "^0.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.0.1"         # https://pypi.org/project/pre-commit/

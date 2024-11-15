@@ -7,6 +7,7 @@ from template_gen_ai_project.helpers.logger_helper import get_logger
 from typing import Optional, List
 from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
+from langchain_ollama.chat_models import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from datetime import datetime
 import json
@@ -18,10 +19,14 @@ from langchain_community.document_loaders import PDFPlumberLoader
 logger = get_logger()
 
 # Configure LLM
-llm = ChatOpenAI(
+# Commenting out OpenAI configuration
+langchain_llm = ChatOpenAI(
     model="gpt-4o-mini",
     api_key=settings.OPENAI_API_KEY,
 )
+
+# Adding Ollama configuration
+llm = ChatOllama(model="llama3.1")
 
 
 def estimate_openai_cost(
@@ -109,41 +114,55 @@ prompt = ChatPromptTemplate.from_messages(
 
 runnable = prompt | llm.with_structured_output(schema=PatientReport)
 
-# Inject the medical report test_data/medical_data/2024-nov-bloodtest-results-health-360.pdf
-logger.info("Loading the medical report...")
-loader = PDFPlumberLoader(
+
+def load_medical_report(file_path: str) -> str:
+    """Load and return the text content of a medical report PDF."""
+    logger.info("Loading the medical report...")
+    loader = PDFPlumberLoader(file_path)
+    docs = loader.load()
+    report_text = "\n".join([doc.page_content for doc in docs])
+    logger.info(report_text)
+    return report_text
+
+
+def count_tokens(text: str, encoding_name: str = "cl100k_base") -> int:
+    """Count the number of tokens in a given text using a specified encoding."""
+    encoding = tiktoken.get_encoding(encoding_name)
+    tokens = encoding.encode(text)
+    token_count = len(tokens)
+    logger.info(f"Token count: {token_count}")
+    return token_count
+
+
+def write_response_to_json(response: BaseModel, file_path: str):
+    """Write the response from the LLM to a JSON file."""
+    logger.info("Writing the response to a JSON file...")
+    response_dict = response.dict()
+    with open(file_path, "w") as f:
+        json.dump(response_dict, f, indent=4, default=str)
+
+
+# Load the medical report
+report_text = load_medical_report(
     "./test_data/medical_data/2024-nov-bloodtest-results-health-360.pdf"
 )
-docs = loader.load()
 
-# Assemble the report text from the document
-report_text = "\n".join([doc.page_content for doc in docs])
-logger.info(report_text)
+# Count input tokens
+input_token_count = count_tokens(report_text)
 
-# Count tokens using tiktoken
-# Use a known encoding, such as 'cl100k_base' for models like gpt-3.5-turbo
-encoding = tiktoken.get_encoding("cl100k_base")
-tokens = encoding.encode(report_text)
-input_token_count = len(tokens)
-logger.info(f"Input token count: {input_token_count}")
-
+# Invoke the data extraction
 logger.info("Invoking the data extraction...")
 response = runnable.invoke({"text": report_text})
 
 # Calculate output tokens
 response_text = response.json()  # Assuming response is a JSON object
-output_tokens = encoding.encode(json.dumps(response_text))
-output_token_count = len(output_tokens)
-logger.info(f"Output token count: {output_token_count}")
+output_token_count = count_tokens(json.dumps(response_text))
 
 # Estimate and print the OpenAI cost
 estimated_cost = estimate_openai_cost(input_token_count, output_token_count)
 logger.info(f"Estimated OpenAI cost: ${estimated_cost:.4f}")
 
-logger.info("Writing the response to a JSON file...")
-# Convert the Pydantic object to a dictionary before writing to JSON
-response_dict = response.dict()
-with open(
-    "./test_data/medical_data/2024-nov-bloodtest-results-health-360.json", "w"
-) as f:
-    json.dump(response_dict, f, indent=4, default=str)
+# Write the response to a JSON file
+write_response_to_json(
+    response, "./test_data/medical_data/2024-nov-bloodtest-results-health-360.json"
+)
