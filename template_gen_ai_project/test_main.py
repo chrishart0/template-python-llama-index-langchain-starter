@@ -12,8 +12,20 @@ from template_gen_ai_project.main import (
 )
 from template_gen_ai_project.settings import settings
 import json
+from unittest.mock import patch, MagicMock
 
 client = TestClient(app)
+
+
+# Mock Redis client
+@pytest.fixture(autouse=True)
+def mock_redis():
+    with patch("template_gen_ai_project.main.redis.Redis") as MockRedis:
+        mock_redis_instance = MockRedis.return_value
+        mock_redis_instance.get.return_value = None
+        mock_redis_instance.set.return_value = True
+        mock_redis_instance.enqueue.return_value = MagicMock(job_id="mock_job_id")
+        yield mock_redis_instance
 
 
 def test_hello_world_model():

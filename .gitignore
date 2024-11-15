@@ -17,3 +17,5 @@ coverage.xml
 # logs
 *.log
 log/*
+2024-nov-bloodtest-results-health-360.pdf
+test_data/medical_data/2024-nov-bloodtest-results-health-360.json
