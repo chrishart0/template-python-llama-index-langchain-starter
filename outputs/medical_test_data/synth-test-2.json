@@ -1,0 +1,180 @@
+{
+    "patient_name": "John Doe",
+    "doctor": null,
+    "facility": null,
+    "date_of_report": "2026-01-20 00:00:00",
+    "tests": [
+        {
+            "test_name": "Body Mass Index (BMI)",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "24.0",
+            "normal_range": "18.5 - 24.9",
+            "unit": "kg/m\u00b2",
+            "notes": "Normal"
+        },
+        {
+            "test_name": "Waist Measurement",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "34 in.",
+            "normal_range": "<= 40 in.",
+            "unit": "in",
+            "notes": "Ideal"
+        },
+        {
+            "test_name": "Blood Pressure",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "115/75",
+            "normal_range": "<= 120 / <= 80",
+            "unit": "mmHg",
+            "notes": "Normal"
+        },
+        {
+            "test_name": "Cholesterol Ratio",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "3.2",
+            "normal_range": "<= 3.4",
+            "unit": "",
+            "notes": "Ideal"
+        },
+        {
+            "test_name": "HDL (high-density lipoprotein)",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "62 mg/dL",
+            "normal_range": ">= 60 mg/dL",
+            "unit": "mg/dL",
+            "notes": "Ideal"
+        },
+        {
+            "test_name": "LDL (low-density lipoprotein)",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "85 mg/dL",
+            "normal_range": "1 - 99 mg/dL",
+            "unit": "mg/dL",
+            "notes": "Ideal"
+        },
+        {
+            "test_name": "Triglycerides",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "105 mg/dL",
+            "normal_range": "<= 149 mg/dL",
+            "unit": "mg/dL",
+            "notes": "Ideal"
+        },
+        {
+            "test_name": "Glucose",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "95 mg/dL",
+            "normal_range": "<= 99 mg/dL",
+            "unit": "mg/dL",
+            "notes": "Ideal"
+        },
+        {
+            "test_name": "Total Cholesterol",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "185 mg/dL",
+            "normal_range": "<= 199 mg/dL",
+            "unit": "mg/dL",
+            "notes": "In Range"
+        },
+        {
+            "test_name": "GGT",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "35 U/L",
+            "normal_range": "<= 65 U/L",
+            "unit": "U/L",
+            "notes": "In Range"
+        },
+        {
+            "test_name": "Blood Urea Nitrogen (BUN)",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "18 mg/dL",
+            "normal_range": "6 - 25 mg/dL",
+            "unit": "mg/dL",
+            "notes": "In Range"
+        },
+        {
+            "test_name": "Creatinine",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "1.2 mg/dL",
+            "normal_range": ".6 - 1.5 mg/dL",
+            "unit": "mg/dL",
+            "notes": "In Range"
+        },
+        {
+            "test_name": "Total Bilirubin",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "1.0 mg/dL",
+            "normal_range": ".1 - 1.4 mg/dL",
+            "unit": "mg/dL",
+            "notes": "In Range"
+        },
+        {
+            "test_name": "AST",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "25 U/L",
+            "normal_range": "8 - 48 U/L",
+            "unit": "U/L",
+            "notes": "In Range"
+        },
+        {
+            "test_name": "ALT",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "35 U/L",
+            "normal_range": "7 - 55 U/L",
+            "unit": "U/L",
+            "notes": "In Range"
+        },
+        {
+            "test_name": "Alkaline Phosphatase",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "85 U/L",
+            "normal_range": "45 - 115 U/L",
+            "unit": "U/L",
+            "notes": "In Range"
+        },
+        {
+            "test_name": "Total Protein",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "7.2 g/dL",
+            "normal_range": "6 - 8.3 g/dL",
+            "unit": "g/dL",
+            "notes": "In Range"
+        },
+        {
+            "test_name": "Albumin",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "4.7 g/dL",
+            "normal_range": "3.2 - 5.6 g/dL",
+            "unit": "g/dL",
+            "notes": "In Range"
+        },
+        {
+            "test_name": "Globulin",
+            "test_type": "biometric screening",
+            "date_conducted": "2026-01-20 00:00:00",
+            "result": "2.7 g/dL",
+            "normal_range": "2 - 4.5 g/dL",
+            "unit": "g/dL",
+            "notes": "In Range"
+        }
+    ],
+    "report_notes": "HealthCheck360 score is 93 which qualifies you as Low Risk."
+}

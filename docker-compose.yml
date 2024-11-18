@@ -7,9 +7,12 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
-  # run this to get a model: docker compose exec ollama ollama pull llama3.1
+
+  # run this to get a model: docker compose exec ollama ollama pull llama3.1:8b
+  # 8b-instruct-q8_0
+  # https://ollama.com/library/llama3.1/tags
   ollama:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.4.1
     ports:
       - "11434:11434"
 

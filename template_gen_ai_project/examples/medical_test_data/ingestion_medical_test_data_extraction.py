@@ -6,27 +6,38 @@ from template_gen_ai_project.settings import settings
 from template_gen_ai_project.helpers.logger_helper import get_logger
 from typing import Optional, List
 from pydantic import BaseModel, Field
-from langchain_openai import ChatOpenAI
-from langchain_ollama.chat_models import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from datetime import datetime
 import json
 import tiktoken
 from langchain_community.document_loaders import PDFPlumberLoader
-
+import requests
+from template_gen_ai_project.helpers.llm_helper import (
+    setup_llm,
+    LLMSetupParams,
+    LLMType,
+)
+import os
 
 # Get the configured logger
 logger = get_logger()
 
-# Configure LLM
-# Commenting out OpenAI configuration
-langchain_llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    api_key=settings.OPENAI_API_KEY,
+# Use the helper function to set up the LLM
+llm = setup_llm(
+    LLMSetupParams(
+        llm_type=LLMType.OPENAI,  # Or "openai"
+        model="gpt-4o-mini",  # Or any other model name
+        use_langchain=True,  # Or False to use Llama Index
+    )
 )
 
-# Adding Ollama configuration
-llm = ChatOllama(model="llama3.1")
+# Set output_file_nam
+source_dir = "./test_data/medical_data/"
+output_dir = f"{settings.OUTPUT_DIRECTORY}medical_test_data/"
+output_file_name = "2024-nov-bloodtest-results-health-360.json"
+
+# Create the output directory if it doesn't exist
+os.makedirs(output_dir, exist_ok=True)
 
 
 def estimate_openai_cost(
@@ -121,7 +132,6 @@ def load_medical_report(file_path: str) -> str:
     loader = PDFPlumberLoader(file_path)
     docs = loader.load()
     report_text = "\n".join([doc.page_content for doc in docs])
-    logger.info(report_text)
     return report_text
 
 
@@ -142,9 +152,21 @@ def write_response_to_json(response: BaseModel, file_path: str):
         json.dump(response_dict, f, indent=4, default=str)
 
 
+def check_ollama_api():
+    """Check if the local Ollama API is up and running."""
+    url = "http://localhost:11434/"  # Replace with the actual local status endpoint
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raises a HTTPError if the status is 4xx, 5xx
+        return True
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error checking local Ollama API: {e}")
+        return False
+
+
 # Load the medical report
 report_text = load_medical_report(
-    "./test_data/medical_data/2024-nov-bloodtest-results-health-360.pdf"
+    f"{source_dir}2024-nov-bloodtest-results-health-360.pdf"
 )
 
 # Count input tokens
@@ -154,15 +176,19 @@ input_token_count = count_tokens(report_text)
 logger.info("Invoking the data extraction...")
 response = runnable.invoke({"text": report_text})
 
-# Calculate output tokens
-response_text = response.json()  # Assuming response is a JSON object
-output_token_count = count_tokens(json.dumps(response_text))
+# Check if the response is None
+if response is None:
+    logger.error("No response received from the data extraction.")
+else:
+    # Calculate output tokens
 
-# Estimate and print the OpenAI cost
-estimated_cost = estimate_openai_cost(input_token_count, output_token_count)
-logger.info(f"Estimated OpenAI cost: ${estimated_cost:.4f}")
+    response_text = response.model_dump_json()  # Assuming response is a JSON object
+    logger.info(f"Number of tests extracted: {len(response.tests)}")
+    output_token_count = count_tokens(json.dumps(response_text))
 
-# Write the response to a JSON file
-write_response_to_json(
-    response, "./test_data/medical_data/2024-nov-bloodtest-results-health-360.json"
-)
+    # Estimate and print the OpenAI cost
+    estimated_cost = estimate_openai_cost(input_token_count, output_token_count)
+    logger.info(f"Estimated OpenAI cost: ${estimated_cost:.4f}")
+
+    # Write the response to a JSON file
+    write_response_to_json(response, f"{output_dir}{output_file_name}")
