@@ -1561,6 +1561,21 @@ llama-index-core = ">=0.12.0,<0.13.0"
 openai = ">=1.1.0"
 
 [[package]]
+name = "llama-index-graph-stores-neo4j"
+version = "0.4.0"
+description = "llama-index graph stores neo4j integration"
+optional = false
+python-versions = "<4.0,>=3.9"
+files = [
+    {file = "llama_index_graph_stores_neo4j-0.4.0-py3-none-any.whl", hash = "sha256:28b4d1fe60ac37f7b2452f33b893130763e55106d33e733244514a2abb22d796"},
+    {file = "llama_index_graph_stores_neo4j-0.4.0.tar.gz", hash = "sha256:5c9409694080bc80262e7c85ba8f35ba99a6f6230e0f4f221e6d3f1d93074753"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.12.0,<0.13.0"
+neo4j = ">=5.16.0,<6.0.0"
+
+[[package]]
 name = "llama-index-indices-managed-llama-cloud"
 version = "0.6.2"
 description = "llama-index indices llama-cloud integration"
@@ -1728,6 +1743,35 @@ files = [
 [package.dependencies]
 llama-index-core = ">=0.12.0,<0.13.0"
 llama-parse = ">=0.5.0"
+
+[[package]]
+name = "llama-index-readers-wikipedia"
+version = "0.3.0"
+description = "llama-index readers wikipedia integration"
+optional = false
+python-versions = "<4.0,>=3.9"
+files = [
+    {file = "llama_index_readers_wikipedia-0.3.0-py3-none-any.whl", hash = "sha256:1723441901a3a19f323872e3c5a968bbfc98cdc5f35e901c99e79f0e8cb7fa57"},
+    {file = "llama_index_readers_wikipedia-0.3.0.tar.gz", hash = "sha256:77972387cd5410c981bd427699613de63e76889f99816512fc3fce3b2eca440a"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.12.0,<0.13.0"
+
+[[package]]
+name = "llama-index-vector-stores-neo4jvector"
+version = "0.3.0"
+description = "llama-index vector_stores neo4jvector integration"
+optional = false
+python-versions = "<4.0,>=3.9"
+files = [
+    {file = "llama_index_vector_stores_neo4jvector-0.3.0-py3-none-any.whl", hash = "sha256:e958a78ebbbc748caa183ab9ecaead10e3d1aa602839a215f8c780d40d8db86b"},
+    {file = "llama_index_vector_stores_neo4jvector-0.3.0.tar.gz", hash = "sha256:83ce8a0ea8505e95a606ba50aab0964af5f08339509992b157e63c0a52b5f41d"},
+]
+
+[package.dependencies]
+llama-index-core = ">=0.12.0,<0.13.0"
+neo4j = ">=5.16.0,<6.0.0"
 
 [[package]]
 name = "llama-parse"
@@ -2024,6 +2068,25 @@ files = [
     {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
     {file = "mypy_extensions-1.0.0.tar.gz", hash = "sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782"},
 ]
+
+[[package]]
+name = "neo4j"
+version = "5.27.0"
+description = "Neo4j Bolt driver for Python"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "neo4j-5.27.0-py3-none-any.whl", hash = "sha256:929c14b9e5341267324eca170b39d1798b032bffacc26a0529eacaf678ae483f"},
+    {file = "neo4j-5.27.0.tar.gz", hash = "sha256:f82ee807cd15b178898d83f41a66372e11719a25dd487fd7bea48fd4b7323765"},
+]
+
+[package.dependencies]
+pytz = "*"
+
+[package.extras]
+numpy = ["numpy (>=1.7.0,<3.0.0)"]
+pandas = ["numpy (>=1.7.0,<3.0.0)", "pandas (>=1.1.0,<3.0.0)"]
+pyarrow = ["pyarrow (>=1.0.0)"]
 
 [[package]]
 name = "nest-asyncio"
@@ -4278,6 +4341,20 @@ docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.2,!=7.3)", "s
 test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7)", "packaging (>=23.1)", "pytest (>=7.4)", "pytest-env (>=0.8.2)", "pytest-freezer (>=0.4.8)", "pytest-mock (>=3.11.1)", "pytest-randomly (>=3.12)", "pytest-timeout (>=2.1)", "setuptools (>=68)", "time-machine (>=2.10)"]
 
 [[package]]
+name = "wikipedia"
+version = "1.4.0"
+description = "Wikipedia API for Python"
+optional = false
+python-versions = "*"
+files = [
+    {file = "wikipedia-1.4.0.tar.gz", hash = "sha256:db0fad1829fdd441b1852306e9856398204dc0786d2996dd2e0c8bb8e26133b2"},
+]
+
+[package.dependencies]
+beautifulsoup4 = "*"
+requests = ">=2.0.0,<3.0.0"
+
+[[package]]
 name = "win32-setctime"
 version = "1.1.0"
 description = "A small Python utility to set file creation time on Windows"
@@ -4469,4 +4546,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "b88c2e167cfc3880667476c7e712936561ac3cff4732952fdf2dfde0f7f9d50d"
+content-hash = "5f99db325cb3b9b2776c78e4b6819847c82a6b9e05f2878d642da78f66d568d5"

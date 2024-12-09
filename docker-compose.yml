@@ -16,5 +16,25 @@ services:
     ports:
       - "11434:11434"
 
+  # https://hub.docker.com/_/neo4j
+  neo4j:
+    user: neo4j:neo4j
+    image: neo4j:5.23
+    ports:
+      - 7687:7687
+      - 7474:7474
+    volumes:
+      - ./.data/neo4j/data:/data
+    environment:
+      - NEO4J_AUTH=neo4j/pleaseletmein
+      - NEO4J_PLUGINS=["apoc"]
+      - NEO4J_db_tx__log_rotation_retention__policy=false
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+    healthcheck:
+        test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:7474 || exit 1"]
+        interval: 15s
+        timeout: 30s
+        retries: 10
+
 volumes:
   redis_data:

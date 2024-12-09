@@ -22,3 +22,7 @@ test_data/medical_data/2024-nov-bloodtest-results-health-360.json
 test_data/medical_data/2024-nov-bloodtest-results-health-360.json.old
 test_data/medical_data/2024-nov-bloodtest-results-health-360.openai.json
 outputs/medical_test_data/2024-nov-bloodtest-results-health-360.json
+
+.data/
+data/
+.cache/

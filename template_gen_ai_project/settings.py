@@ -14,8 +14,11 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: Optional[str] = None
     AZURE_OPENAI_API_KEY: Optional[str] = None
     AZURE_OPENAI_ENDPOINT: Optional[str] = None
-    AZURE_OPENAI_DEPLOYMENT_NAME: Optional[str] = None
+    AZURE_OPENAI_MODEL: Optional[str] = "gpt-4o-mini"
+    AZURE_OPENAI_DEPLOYMENT_NAME: Optional[str] = "gpt-4o-mini"
     AZURE_OPENAI_API_VERSION: Optional[str] = "2023-07-01-preview"
+    AZURE_OPENAI_EMBEDDING_MODEL: Optional[str] = None
+    AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME: Optional[str] = None
     OUTPUT_DIRECTORY: str = "./outputs/"  # New setting for output directory
     MODEL: str = "gpt-4o-mini"
 

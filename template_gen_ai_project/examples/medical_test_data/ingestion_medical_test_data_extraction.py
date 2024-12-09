@@ -12,7 +12,7 @@ import json
 import tiktoken
 from langchain_community.document_loaders import PDFPlumberLoader
 import requests
-from template_gen_ai_project.helpers.llm_helper import (
+from template_gen_ai_project.helpers.llm import (
     setup_llm,
     LLMSetupParams,
     LLMType,
