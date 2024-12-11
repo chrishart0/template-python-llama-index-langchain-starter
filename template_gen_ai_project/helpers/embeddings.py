@@ -37,8 +37,9 @@ class LlamaIndexEmbeddingModels:
     def HuggingFaceEmbedding():
         # Embedding Model Leaderboard: https://huggingface.co/spaces/mteb/leaderboard
         return LlamaIndexHuggingFaceEmbedding(
-            # model_name="jinaai/jina-embeddings-v3"
-            model_name="BAAI/bge-base-en-v1.5"
+            model_name="jinaai/jina-embeddings-v3",
+            trust_remote_code=True,
+            # model_name="BAAI/bge-base-en-v1.5"
         )
 
 

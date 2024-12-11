@@ -1,6 +1,19 @@
 # template_gen_ai_project/examples/simple-llama-index-neo4j-graph.py
 # https://docs.llamaindex.ai/en/stable/examples/index_structs/knowledge_graph/Neo4jKGIndexDemo/
-from llama_index.core import StorageContext
+
+# TODO List
+# - Use a modern embeddings model
+# - Use local LLM to generate triples
+# - Implement tracing to understand what's happening under the hood
+
+# Useful Cypher Commands
+# - Match (n) Return n : show all nodes & relationships
+# - Match (n) Detach Delete n : delete all nodes and relationships
+
+from llama_index.core import (
+    StorageContext,
+    SimpleDirectoryReader,
+)
 from llama_index.core.indices import PropertyGraphIndex
 from llama_index.graph_stores.neo4j import Neo4jPropertyGraphStore
 from template_gen_ai_project.settings import settings
@@ -12,7 +25,8 @@ from template_gen_ai_project.helpers.embeddings import (
     Library,
     ModelProvider,
 )
-from llama_index.readers.wikipedia import WikipediaReader
+
+# from llama_index.readers.wikipedia import WikipediaReader
 
 # Get the configured logger
 logger = get_logger()
@@ -28,7 +42,9 @@ llm = AzureOpenAI(
 
 LlamaIndexSettings.llm = llm
 LlamaIndexSettings.embed_model = setup_embeddings(
-    library=Library.LlamaIndex, model_provider=ModelProvider.AzureOpenAI
+    #        library=Library.LlamaIndex, model_provider=ModelProvider.AzureOpenAI
+    library=Library.LlamaIndex,
+    model_provider=ModelProvider.HuggingFace,
 )
 LlamaIndexSettings.chunk_size = 512
 
@@ -42,13 +58,15 @@ test_data_dir = "./test_data/financial_docs"
 index_cache_dir = "./knowledge_graph_index"
 
 # Prepare documents
-loader = WikipediaReader()
-
-logger.info("Loading Wikipedia data")
-documents = loader.load_data(
-    pages=["Guardians of the Galaxy Vol. 3"],
-    auto_suggest=False,
-)
+# loader = WikipediaReader()
+#
+# logger.info("Loading Wikipedia data")
+# documents = loader.load_data(
+#    pages=["Guardians of the Galaxy Vol. 3"],
+#    auto_suggest=False,
+# )
+#
+documents = SimpleDirectoryReader("./test_data/llamaindex").load_data()
 
 logger.info(f"Connecting to Neo4j at {url}")
 graph_store = Neo4jPropertyGraphStore(

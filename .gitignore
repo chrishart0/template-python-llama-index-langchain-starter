@@ -27,3 +27,4 @@ outputs/medical_test_data/2024-nov-bloodtest-results-health-360.json
 data/
 .cache/
 test_data/handbook
+test_data/COIN
