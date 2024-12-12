@@ -31,6 +31,7 @@ llama-index-vector-stores-neo4jvector = "^0.3.0"
 llama-index-graph-stores-neo4j = "^0.4.0"
 llama-index-readers-wikipedia = "^0.3.0"
 wikipedia = "^1.4.0"
+einops = "^0.8.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.0.1"         # https://pypi.org/project/pre-commit/

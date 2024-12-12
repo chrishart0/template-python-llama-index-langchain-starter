@@ -24,6 +24,11 @@ class ModelProvider(Enum):
     HuggingFace = "huggingface"
 
 
+class HuggingFaceEmbeddingModel(Enum):
+    Jina = "jina"
+    BAAI = "baai"
+
+
 class LlamaIndexEmbeddingModels:
     def AzureOpenAIEmbedding():
         return LlamaIndexAzureOpenAIEmbedding(
@@ -34,13 +39,29 @@ class LlamaIndexEmbeddingModels:
             api_version=settings.AZURE_OPENAI_API_VERSION,
         )
 
-    def HuggingFaceEmbedding():
+    def HuggingFaceEmbedding(
+        model: HuggingFaceEmbeddingModel = HuggingFaceEmbeddingModel.Jina,
+    ):
         # Embedding Model Leaderboard: https://huggingface.co/spaces/mteb/leaderboard
-        return LlamaIndexHuggingFaceEmbedding(
-            model_name="jinaai/jina-embeddings-v3",
-            trust_remote_code=True,
-            # model_name="BAAI/bge-base-en-v1.5"
-        )
+        if model == HuggingFaceEmbeddingModel.Jina:
+            logger.info("Using Jina Embeddings")
+            logger.warning(
+                "Jina Embeddings runs with trust_remote_code=True, we aren't sure if this is safe."
+            )
+            # TODO: Document why we need trust_remote_code=True
+            # https://huggingface.co/jinaai/jina-embeddings-v3/discussions/22
+            return LlamaIndexHuggingFaceEmbedding(
+                # https://jina.ai/news/jina-embeddings-v3-a-frontier-multilingual-embedding-model/
+                #   NOTE: You may need to delete your cache for the roberta flash implementation:
+                #   `rm -rf /Users/$USER/.cache/huggingface/modules/transformers_modules/jinaai/xlm-roberta-flash-implementation`
+                model_name="jinaai/jina-embeddings-v3",
+                trust_remote_code=True,
+            )
+        elif model == HuggingFaceEmbeddingModel.BAAI:
+            logger.info("Using BAAI Embeddings")
+            return LlamaIndexHuggingFaceEmbedding(model_name="BAAI/bge-base-en-v1.5")
+        else:
+            raise ValueError(f"Invalid HuggingFaceEmbeddingModel: {model}")
 
 
 def setup_embeddings(library: Library, model_provider: ModelProvider):

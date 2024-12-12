@@ -2,23 +2,26 @@
 # https://docs.llamaindex.ai/en/stable/examples/index_structs/knowledge_graph/Neo4jKGIndexDemo/
 
 # TODO List
-# - Use a modern embeddings model
 # - Use local LLM to generate triples
 # - Implement tracing to understand what's happening under the hood
 
 # Useful Cypher Commands
 # - Match (n) Return n : show all nodes & relationships
 # - Match (n) Detach Delete n : delete all nodes and relationships
+# Wipe graph store
+# MATCH (n) DETACH DELETE n
+# CALL apoc.schema.assert({},{},true) YIELD label, key RETURN *
+
 
 from llama_index.core import (
     StorageContext,
     SimpleDirectoryReader,
+    Settings as LlamaIndexSettings,
 )
 from llama_index.core.indices import PropertyGraphIndex
 from llama_index.graph_stores.neo4j import Neo4jPropertyGraphStore
 from template_gen_ai_project.settings import settings
 from template_gen_ai_project.helpers.logger_helper import get_logger
-from llama_index.core import Settings as LlamaIndexSettings
 from llama_index.llms.azure_openai import AzureOpenAI
 from template_gen_ai_project.helpers.embeddings import (
     setup_embeddings,
@@ -42,7 +45,7 @@ llm = AzureOpenAI(
 
 LlamaIndexSettings.llm = llm
 LlamaIndexSettings.embed_model = setup_embeddings(
-    #        library=Library.LlamaIndex, model_provider=ModelProvider.AzureOpenAI
+    # library=Library.LlamaIndex, model_provider=ModelProvider.AzureOpenAI
     library=Library.LlamaIndex,
     model_provider=ModelProvider.HuggingFace,
 )
@@ -54,8 +57,9 @@ password = "pleaseletmein"
 url = "bolt://localhost:7687"
 database = "neo4j"
 embed_dim = 1536
-test_data_dir = "./test_data/financial_docs"
-index_cache_dir = "./knowledge_graph_index"
+test_data_dir = "./test_data/graph_rag_docs/llama_index_overview"
+index_cache_dir = ".cache/knowledge_graph_index"
+
 
 # Prepare documents
 # loader = WikipediaReader()
@@ -66,7 +70,6 @@ index_cache_dir = "./knowledge_graph_index"
 #    auto_suggest=False,
 # )
 #
-documents = SimpleDirectoryReader("./test_data/llamaindex").load_data()
 
 logger.info(f"Connecting to Neo4j at {url}")
 graph_store = Neo4jPropertyGraphStore(
@@ -79,6 +82,8 @@ graph_store = Neo4jPropertyGraphStore(
 logger.info("Creating storage context")
 storage_context = StorageContext.from_defaults(graph_store=graph_store)
 
+logger.info(f"Loading documents from {test_data_dir}")
+documents = SimpleDirectoryReader(test_data_dir).load_data()
 
 # NOTE: can take a while!
 logger.info("Creating index")
@@ -89,7 +94,7 @@ index = PropertyGraphIndex.from_documents(
     show_progress=True,
     property_graph_store=graph_store,
 )
-storage_context.persist(persist_dir="./.cache/knowledge_graph_index")
+# storage_context.persist(persist_dir=".cache/knowledge_graph_index")
 
 # logger.info(f"Loading index from {index_cache_dir}")
 # index = load_index_from_storage(
@@ -126,5 +131,7 @@ def query_graph_store(query):
 while True:
     user_query = input("User: ")
     if user_query.lower() == "quit":
+        # Disconnect from Neo4j
+        graph_store.close()
         break
     query_graph_store(user_query)
