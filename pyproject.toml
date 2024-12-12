@@ -7,11 +7,12 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.12,<3.13"
 llama_index = "^0.12.1"       # https://pypi.org/project/llama-index/
 llama-index-llms-azure-openai = "^0.3.0"
 llama-index-embeddings-azure-openai = "^0.3.0"
 llama-index-embeddings-huggingface = "^0.4.0"
+arize-phoenix-otel = "0.6.1"
 openai = "1.54.4"             # https://pypi.org/project/openai/
 langchain = "0.3.7"           # https://pypi.org/project/langchain/
 langchain-openai = "^0.2.8"   # https://pypi.org/project/langchain-openai/
@@ -36,6 +37,7 @@ transformers = "^4.47.0"
 python-pptx = "^1.0.2"
 pillow = "^11.0.0"
 einops = "^0.8.0"
+openinference-instrumentation-llama-index = "^3.1.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.0.1"         # https://pypi.org/project/pre-commit/

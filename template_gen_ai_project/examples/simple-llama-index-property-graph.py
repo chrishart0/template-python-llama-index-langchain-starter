@@ -3,7 +3,6 @@
 
 # TODO List
 # - Use local LLM to generate triples
-# - Implement tracing to understand what's happening under the hood
 
 # Useful Cypher Commands
 # - Match (n) Return n : show all nodes & relationships
@@ -29,10 +28,22 @@ from template_gen_ai_project.helpers.embeddings import (
     ModelProvider,
 )
 
+from phoenix.otel import register
+from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
+
+
 # from llama_index.readers.wikipedia import WikipediaReader
 
 # Get the configured logger
 logger = get_logger()
+
+# https://docs.arize.com/phoenix/tracing/integrations-tracing/llamaindex
+tracer_provider = register(
+    project_name="simple-llama-index-property-graph",
+    endpoint="http://localhost:6006/v1/traces",
+)
+
+LlamaIndexInstrumentor().instrument(tracer_provider=tracer_provider)
 
 llm = AzureOpenAI(
     model=settings.AZURE_OPENAI_MODEL,
