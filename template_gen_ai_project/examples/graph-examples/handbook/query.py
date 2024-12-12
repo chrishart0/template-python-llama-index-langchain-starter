@@ -13,8 +13,6 @@
 
 
 from llama_index.core import (
-    StorageContext,
-    SimpleDirectoryReader,
     Settings as LlamaIndexSettings,
 )
 from llama_index.core.indices import PropertyGraphIndex
@@ -38,11 +36,11 @@ from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
 logger = get_logger()
 
 # https://docs.arize.com/phoenix/tracing/integrations-tracing/llamaindex
+logger.info("Registering tracer provider")
 tracer_provider = register(
     project_name="simple-llama-index-property-graph",
     endpoint="http://localhost:6006/v1/traces",
 )
-
 LlamaIndexInstrumentor().instrument(tracer_provider=tracer_provider)
 
 llm = AzureOpenAI(
@@ -73,16 +71,6 @@ test_data_dir = "./test_data/graph_rag_docs/llama_index_overview"
 index_cache_dir = ".cache/knowledge_graph_index"
 
 
-# Prepare documents
-# loader = WikipediaReader()
-#
-# logger.info("Loading Wikipedia data")
-# documents = loader.load_data(
-#    pages=["Guardians of the Galaxy Vol. 3"],
-#    auto_suggest=False,
-# )
-#
-
 logger.info(f"Connecting to Neo4j at {url}")
 graph_store = Neo4jPropertyGraphStore(
     username=username,
@@ -91,29 +79,12 @@ graph_store = Neo4jPropertyGraphStore(
     database=database,
 )
 
-logger.info("Creating storage context")
-storage_context = StorageContext.from_defaults(graph_store=graph_store)
-
-logger.info(f"Loading documents from {test_data_dir}")
-documents = SimpleDirectoryReader(test_data_dir).load_data()
-
 # NOTE: can take a while!
-logger.info("Creating index")
-index = PropertyGraphIndex.from_documents(
-    documents,
-    storage_context=storage_context,
-    # max_triplets_per_chunk=2, # Makes ingestion faster, but not as good
-    show_progress=True,
+logger.info("Connecting to index")
+
+index = PropertyGraphIndex.from_existing(
     property_graph_store=graph_store,
 )
-# storage_context.persist(persist_dir=".cache/knowledge_graph_index")
-
-# logger.info(f"Loading index from {index_cache_dir}")
-# index = load_index_from_storage(
-#     StorageContext.from_defaults(persist_dir=index_cache_dir)
-# )
-
-
 ###########################
 
 
@@ -134,10 +105,6 @@ def query_graph_store(query):
     print(f"Agent: {query_engine.query(query)}")
     print("\n")
 
-
-# Example queries
-# query_graph_store("How was the quarter?")
-# query_graph_store("What is the document about?")
 
 # Interactive chat interface
 while True:

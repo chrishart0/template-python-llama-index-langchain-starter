@@ -73,16 +73,6 @@ test_data_dir = "./test_data/graph_rag_docs/llama_index_overview"
 index_cache_dir = ".cache/knowledge_graph_index"
 
 
-# Prepare documents
-# loader = WikipediaReader()
-#
-# logger.info("Loading Wikipedia data")
-# documents = loader.load_data(
-#    pages=["Guardians of the Galaxy Vol. 3"],
-#    auto_suggest=False,
-# )
-#
-
 logger.info(f"Connecting to Neo4j at {url}")
 graph_store = Neo4jPropertyGraphStore(
     username=username,
@@ -102,48 +92,6 @@ logger.info("Creating index")
 index = PropertyGraphIndex.from_documents(
     documents,
     storage_context=storage_context,
-    # max_triplets_per_chunk=2, # Makes ingestion faster, but not as good
     show_progress=True,
     property_graph_store=graph_store,
 )
-# storage_context.persist(persist_dir=".cache/knowledge_graph_index")
-
-# logger.info(f"Loading index from {index_cache_dir}")
-# index = load_index_from_storage(
-#     StorageContext.from_defaults(persist_dir=index_cache_dir)
-# )
-
-
-###########################
-
-
-query_engine = index.as_query_engine(
-    # include_text=False,
-    # response_mode="tree_summarize",
-    # embedding_mode="hybrid",
-    # similarity_top_k=5,
-    verbose=True,
-)
-
-logger.info("Querying with LLM")
-
-
-def query_graph_store(query):
-    print("\n")
-    logger.info(f"User: {query}")
-    print(f"Agent: {query_engine.query(query)}")
-    print("\n")
-
-
-# Example queries
-# query_graph_store("How was the quarter?")
-# query_graph_store("What is the document about?")
-
-# Interactive chat interface
-while True:
-    user_query = input("User: ")
-    if user_query.lower() == "quit":
-        # Disconnect from Neo4j
-        graph_store.close()
-        break
-    query_graph_store(user_query)
