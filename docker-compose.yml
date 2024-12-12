@@ -23,8 +23,8 @@ services:
     ports:
       - 7687:7687
       - 7474:7474
-    volumes:
-      - ./.data/neo4j/data:/data
+    #volumes:
+      #- ./.data/neo4j/data:/data
     environment:
       - NEO4J_AUTH=neo4j/pleaseletmein
       - NEO4J_PLUGINS=["apoc"]

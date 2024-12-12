@@ -31,6 +31,10 @@ llama-index-vector-stores-neo4jvector = "^0.3.0"
 llama-index-graph-stores-neo4j = "^0.4.0"
 llama-index-readers-wikipedia = "^0.3.0"
 wikipedia = "^1.4.0"
+torch = "^2.5.1"
+transformers = "^4.47.0"
+python-pptx = "^1.0.2"
+pillow = "^11.0.0"
 einops = "^0.8.0"
 
 [tool.poetry.group.dev.dependencies]
