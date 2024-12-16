@@ -12,7 +12,6 @@ Follow these steps to set up the project:
    ```sh
    # Install specific Python version
    pyenv install 3.12
-   pyenv local 3.12
    python --version 
    echo "Please make sure you really got python 3.12, if you don't you may need to check your pyenv installation then delete your .venv and try again."
    ```
