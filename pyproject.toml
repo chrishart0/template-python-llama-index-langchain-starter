@@ -45,6 +45,7 @@ black = "^24.10.0"            # https://pypi.org/project/black/
 flake8 = "^7.1.1"             # https://pypi.org/project/flake8/
 pytest = "^8.3.3"             # https://pypi.org/project/pytest/
 pytest-cov = "^5.0.0"         # https://pypi.org/project/pytest-cov/
+detect-secrets = "^1.5.0"     # https://pypi.org/project/detect-secrets/
 
 [build-system]
 requires = ["poetry-core"]
